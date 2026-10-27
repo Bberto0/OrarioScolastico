@@ -1,9 +1,11 @@
-public class Corso {
+package ClassiScuola;
+
+public class Materia {
     private Classe classe;
     private Docente docente;
     private String materia;
     private int ore;
-    public Corso(Classe classe, Docente docente, String materia, int ore){
+    public Materia(Classe classe, Docente docente, String materia, int ore){
         this.classe=classe;
         this.docente=docente;
         this.materia=materia;
@@ -14,14 +16,14 @@ public class Corso {
         return materia;
     }
 
-    public int getOre() {
+    public static int getOre() {
         return ore;
     }
 
-    public String getDocente() {
-        return docente.getNome();
+    public Docente getDocente() {
+        return docente;
     }
-    public String getClasse() {
-        return classe.getAnno()+classe.getSezione()+" "+classe.getCorso();
+    public Classe getClasse() {
+        return classe;
     }
 }
