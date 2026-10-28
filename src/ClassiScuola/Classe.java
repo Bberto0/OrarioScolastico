@@ -53,9 +53,14 @@ public class Classe {
     public String toString(){
         String elencoDocenti="";
         for (Materia c:corsi){
-            elencoDocenti+="\n  - DOCENTE: " + c.getDocente() + ", MATERIA: " + c.getMateria() + ", ORE: " + c.getOre();
+            elencoDocenti+="\n  - DOCENTE: " + c.getDocente().getNome() + ", MATERIA: " + c.getMateria() + ", ORE: " + c.getOre();
         }
         return "INFORMAZIONI CLASSE " + this.anno + this.sezione + " " + this.corso + ":"
                 + "\nELENCO DOCENTI: " + elencoDocenti;
+    }
+    // override del metodo hashCode per far funzionare le HashMap
+    @Override
+    public int hashCode() {
+        return java.util.Objects.hash(anno, sezione, corso);
     }
 }

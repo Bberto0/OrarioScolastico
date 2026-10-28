@@ -27,10 +27,13 @@ public class CSVreader {
 
                 // spezzo la riga ogni volta che incontro una virgola
                 String[] campi = line.split(COMMA_DELIMITER);
+                valori.add(campi);
             }
 
             Dati d=new Dati(valori);
             d.costruisciClassi();
+            ElencoOrari e=new ElencoOrari(d);
+            e.stampaGriglie();
 
         } catch(IOException e) {
 

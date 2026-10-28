@@ -26,12 +26,17 @@ public class Dati {
             int ore=Integer.parseInt(campi[5]);
 
             Classe c = new Classe(anno, sezione, corso);
-
-            alreadyExists(elencoClassi, c);
+            if(!elencoClassi.contains(c)){
+                elencoClassi.add(c);
+            }
+            //alreadyExists(elencoClassi, c);
 
             Docente d = new Docente(nomeDocente);
+            if(!elencoDocenti.contains(d)){
+                elencoDocenti.add(d);
+            }
 
-            alreadyExists(elencoDocenti, d);
+            //alreadyExists(elencoDocenti, d);
 
             Materia ma=new Materia(c,d,materia, ore);
             elencoCorsi.add(ma);
@@ -42,18 +47,18 @@ public class Dati {
             Docente docenteAttuale=elencoDocenti.get(elencoDocenti.indexOf(d));
             docenteAttuale.aggiungiCorso(ma);
         }
-        for(Docente dc:elencoDocenti){
-            System.out.println(dc + "\n\n");
-        }
+        /*for(Classe cl:elencoClassi){
+            System.out.println(cl + "\n\n");
+        }*/
     }
 
     // implemento un metodo unico per controllare se l'istanza è gia inserita negli elenchi
     // uso un generico elemento T
-    public <T> boolean alreadyExists(ArrayList<T> elenco, T elemento) {
+    /*public <T> boolean alreadyExists(ArrayList<T> elenco, T elemento) {
 
         if(elenco.contains(elemento)) aggiornaInformazioni(elemento);
 
-    }
+    }*/
 
     private <T> void aggiornaInformazioni(T elemento) {
 

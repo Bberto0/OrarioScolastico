@@ -17,4 +17,7 @@ public class Lezioni {
     public void setFasciaOraria(String fasciaOraria){
         this.fasciaOraria = fasciaOraria;
     }
+    public String getMateria(){
+        return materia;
+    }
 }

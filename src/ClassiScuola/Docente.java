@@ -36,7 +36,7 @@ public class Docente {
         calcolaOreServizio();
         String elencoClassi="";
         for (Materia c:corsi){
-            elencoClassi+="\n   - CLASSE: " + c.getClasse() + ", MATERIA: " + c.getMateria() + ", ORE: " + c.getOre();
+            elencoClassi+="\n   - CLASSE: " + c.getClasse().getAnno() + c.getClasse().getSezione() + " " + c.getClasse().getCorso() + ", MATERIA: " + c.getMateria() + ", ORE: " + c.getOre();
         }
         return "INFORMAZIONI DOCENTE: " + nome
                 + "\nORE DI LAVORO: " + oreServizio

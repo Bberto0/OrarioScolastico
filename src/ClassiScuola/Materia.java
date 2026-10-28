@@ -16,7 +16,7 @@ public class Materia {
         return materia;
     }
 
-    public static int getOre() {
+    public int getOre() {
         return ore;
     }
 
