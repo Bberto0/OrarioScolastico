@@ -3,23 +3,32 @@ package ClassiScuola;
 import java.util.ArrayList;
 
 public class Classe {
-    private int anno;
-    private String sezione;
-    private String corso;
-    private ArrayList<Materia> corsi=new ArrayList<>();
+
+    private final int anno;
+    private final String sezione;
+    private final String corso;
+
+    private final ArrayList<Docente> docenti = new ArrayList<>();
+    private final ArrayList<Materia> materie = new ArrayList<>();
 
     public Classe(int anno, String sezione, String corso) {
+
         this.anno=anno;
         this.sezione=sezione;
-        this.corso=corso;
+        this.corso = corso;
     }
 
-    public void aggiungiCorso(Materia c) {
-        this.corsi.add(c);
+    public void aggiungiInformazioni(Docente d, Materia m) {
+
+        if(!docenti.contains(d))
+            docenti.add(d);
+
+        if(!materie.contains(m))
+            materie.add(m);
     }
 
     public ArrayList<Materia> getCorsi() {
-        return corsi;
+        return materie;
     }
 
     public int getAnno() {

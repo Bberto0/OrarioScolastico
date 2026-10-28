@@ -28,7 +28,7 @@ public class CSVreader {
                 // spezzo la riga ogni volta che incontro una virgola
                 String[] campi = line.split(COMMA_DELIMITER);
 
-                // gestione di eventuali errori
+                // gestione di eventuali errori, se non rispettano i controlli vengono ignorati
                 if(controlloValidita(campi))
                     valori.add(campi);
             }
@@ -41,13 +41,6 @@ public class CSVreader {
         } catch(IOException e) {
 
             System.err.println(e.getMessage());
-        }
-    }
-
-    public static void printValues(ArrayList<String> values) {
-
-        for(String value : values){
-            System.out.println(value);
         }
     }
 
@@ -65,7 +58,6 @@ public class CSVreader {
         int ore = Integer.parseInt(campi[5]);
 
         return anno > 0 && ore > 0;
-
     }
 }
 

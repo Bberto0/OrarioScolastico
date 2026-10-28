@@ -1,22 +1,27 @@
 package ClassiScuola;
 
 public class Lezioni {
+
     private Docente docente;
     private Classe classe;
     private String materia;
     private String giorno;
     private String fasciaOraria;
+
     public Lezioni(Docente docente, Classe classe, String materia){
         this.docente = docente;
         this.classe = classe;
         this.materia = materia;
     }
+
     public void setGiorno(String giorno){
         this.giorno = giorno;
     }
+
     public void setFasciaOraria(String fasciaOraria){
         this.fasciaOraria = fasciaOraria;
     }
+
     public String getMateria(){
         return materia;
     }
