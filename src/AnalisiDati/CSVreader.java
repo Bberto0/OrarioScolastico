@@ -27,12 +27,15 @@ public class CSVreader {
 
                 // spezzo la riga ogni volta che incontro una virgola
                 String[] campi = line.split(COMMA_DELIMITER);
-                valori.add(campi);
+
+                // gestione di eventuali errori
+                if(controlloValidita(campi))
+                    valori.add(campi);
             }
 
-            Dati d=new Dati(valori);
+            Dati d = new Dati(valori);
             d.costruisciClassi();
-            ElencoOrari e=new ElencoOrari(d);
+            ElencoOrari e = new ElencoOrari(d);
             e.stampaGriglie();
 
         } catch(IOException e) {
@@ -41,11 +44,28 @@ public class CSVreader {
         }
     }
 
-    public static void printValues(ArrayList<String> values){
+    public static void printValues(ArrayList<String> values) {
 
         for(String value : values){
             System.out.println(value);
         }
+    }
+
+    // assicuro che il contenuto del file non sia corrotto o incompleto
+    public static boolean controlloValidita(String[] campi) {
+
+        if(campi == null || campi.length != 6) return false;
+
+        // controllo che ogni campo contenga qualcosa, se è vuoto la riga non è valida
+        for(int i = 0; i < 6; i++)
+            if(campi[i] == null || campi[i].trim().isEmpty()) return false;
+
+        // controllo che anno e ore non siano minori di 0
+        int anno = Integer.parseInt(campi[1]);
+        int ore = Integer.parseInt(campi[5]);
+
+        return anno > 0 && ore > 0;
+
     }
 }
 
