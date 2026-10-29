@@ -35,6 +35,7 @@ public class CSVreader {
 
             Dati d = new Dati(valori);
             d.costruisciClassi();
+
             ElencoOrari e = new ElencoOrari(d);
             e.stampaGriglie();
 

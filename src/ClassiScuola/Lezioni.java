@@ -4,11 +4,11 @@ public class Lezioni {
 
     private Docente docente;
     private Classe classe;
-    private String materia;
+    private Materia materia;
     private String giorno;
     private String fasciaOraria;
 
-    public Lezioni(Docente docente, Classe classe, String materia){
+    public Lezioni(Docente docente, Classe classe, Materia materia){
         this.docente = docente;
         this.classe = classe;
         this.materia = materia;
@@ -22,7 +22,7 @@ public class Lezioni {
         this.fasciaOraria = fasciaOraria;
     }
 
-    public String getMateria(){
+    public Materia getMateria(){
         return materia;
     }
 }

@@ -58,15 +58,6 @@ public class Classe {
                this.corso.equals(c.corso);
     }
 
-    @Override
-    public String toString(){
-        String elencoDocenti="";
-        for (Materia c:corsi){
-            elencoDocenti+="\n  - DOCENTE: " + c.getDocente().getNome() + ", MATERIA: " + c.getMateria() + ", ORE: " + c.getOre();
-        }
-        return "INFORMAZIONI CLASSE " + this.anno + this.sezione + " " + this.corso + ":"
-                + "\nELENCO DOCENTI: " + elencoDocenti;
-    }
     // override del metodo hashCode per far funzionare le HashMap
     @Override
     public int hashCode() {

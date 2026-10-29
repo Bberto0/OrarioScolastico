@@ -10,9 +10,7 @@ public class Dati {
     private final ArrayList<Classe> elencoClassi = new ArrayList<>();
     private final ArrayList<Materia> elencoMaterie = new ArrayList<>();
 
-    public Dati(ArrayList<String[]> dati) {
-        this.dati=dati;
-    }
+    public Dati(ArrayList<String[]> dati) { this.dati=dati; }
 
     public void costruisciClassi(){
         for(String[] campi : dati){
@@ -85,7 +83,7 @@ public class Dati {
         return elencoDocenti;
     }
 
-    public ArrayList<Materia> getElencoCorsi() {
-        return elencoCorsi;
+    public ArrayList<Materia> getElencoMaterie() {
+        return elencoMaterie;
     }
 }

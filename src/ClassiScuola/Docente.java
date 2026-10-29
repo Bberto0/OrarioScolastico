@@ -2,24 +2,19 @@ package ClassiScuola;
 
 import java.util.ArrayList;
 
-public class Docente {
+public abstract class Docente {
 
     private final String nome;
     private int oreServizio = 0;
 
-    private ArrayList<Classe> classi = new ArrayList<>();
-    private ArrayList<Materia> materie = new ArrayList<>();
+    private final ArrayList<Classe> classi = new ArrayList<>();
+    private final ArrayList<Materia> materie = new ArrayList<>();
 
     public Docente(String nome) {
+
         this.nome = nome;
-    }
 
-    public ArrayList<Materia> getCorsi() {
-        return materie;
-    }
-
-    public String getNome(){
-        return nome;
+        this.oreServizio = calcolaOreServizio();
     }
 
     public void aggiungiInformazioni(Classe c, Materia m) {
@@ -31,24 +26,14 @@ public class Docente {
             materie.add(m);
     }
 
-    public void calcolaOreServizio(){
-        int oreTotali=0;
-        for(Materia c:materie){
-            oreTotali+=c.getOre();
-        }
-        oreServizio=oreTotali;
-    }
+    public int calcolaOreServizio() {
 
-    @Override
-    public String toString() {
-        calcolaOreServizio();
-        String elencoClassi="";
-        for (Materia c:materie){
-            elencoClassi+="\n   - CLASSE: " + c.getClasse().getAnno() + c.getClasse().getSezione() + " " + c.getClasse().getCorso() + ", MATERIA: " + c.getMateria() + ", ORE: " + c.getOre();
-        }
-        return "INFORMAZIONI DOCENTE: " + nome
-                + "\nORE DI LAVORO: " + oreServizio
-                + "\nELENCO CLASSI ASSEGNATE: " + elencoClassi;
+        int oreTotali = 0;
+
+        for(Materia c:materie)
+            oreTotali+=c.getOre();
+
+        return oreTotali;
     }
 
     @Override
@@ -61,5 +46,15 @@ public class Docente {
 
         // controllo parametro per parametro
         return this.nome.equals(d.getNome());
+    }
+
+    // -- GETTER --
+
+    public ArrayList<Materia> getCorsi() {
+        return materie;
+    }
+
+    public String getNome(){
+        return nome;
     }
 }
