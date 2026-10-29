@@ -21,19 +21,24 @@ public class ElencoOrari {
         // prendo l'elenco di materie per ogni classe
         ArrayList<Materia> materia = d.getElencoMaterie();
 
+        // per ogni materia
         for(Materia m : materia) {
 
-            // creo tante lezioni quante sono le ore
-            for(int i = 0; i < m.getOre(); i++) {
+            // per ogni classe che ha la suddetta materia
+            for(Classe c : m.getMappaClassiDocenti().keySet()) {
 
-                // istanzio un oggetto lezioni
-                Lezioni l = new Lezioni(m.getDocente(), m.getClasse(), m.getMateria());
+                // per ogni ora della classe
+                for(int j = 0; j < m.getOre(); j++) {
 
-                // controllo: se la classe non è già dell'HashMap, la inserisco
-                lezioniPerClasse.putIfAbsent(m.getClasse(), new ArrayList<>());
+                    // istanzio un oggetto lezioni
+                    Lezioni l = new Lezioni(m.getDocente(c), c, m);
 
-                // inserisco la lezione dell' ArrayList della classe
-                lezioniPerClasse.get(m.getClasse()).add(l);
+                    // controllo: se la classe non è già dell'HashMap, la inserisco
+                    lezioniPerClasse.putIfAbsent(c, new ArrayList<>());
+
+                    // inserisco la lezione dell' ArrayList della classe
+                    lezioniPerClasse.get(c).add(l);
+                }
             }
         }
     }
@@ -99,7 +104,7 @@ public class ElencoOrari {
                 for (int g=0;g<5;g++){
                     String testoCella = "[ vuoto ]";
                     if (l[g][h] != null) {
-                        testoCella = l[g][h].getMateria();
+                        testoCella = l[g][h].getMateria().getNome();
                     }
                     System.out.printf("%-15s | ", testoCella);
                 }

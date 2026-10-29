@@ -2,7 +2,7 @@ package ClassiScuola;
 
 import java.util.ArrayList;
 
-public abstract class Docente {
+public class Docente {
 
     private final String nome;
     private int oreServizio = 0;
@@ -13,8 +13,6 @@ public abstract class Docente {
     public Docente(String nome) {
 
         this.nome = nome;
-
-        this.oreServizio = calcolaOreServizio();
     }
 
     public void aggiungiInformazioni(Classe c, Materia m) {
@@ -24,13 +22,14 @@ public abstract class Docente {
 
         if(!materie.contains(m))
             materie.add(m);
+
     }
 
     public int calcolaOreServizio() {
 
         int oreTotali = 0;
 
-        for(Materia c:materie)
+        for(Materia c : materie)
             oreTotali+=c.getOre();
 
         return oreTotali;
