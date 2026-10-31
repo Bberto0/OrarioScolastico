@@ -25,4 +25,12 @@ public class Lezioni {
     public Materia getMateria(){
         return materia;
     }
+
+    public Docente getDocente() {
+        return docente;
+    }
+
+    public Classe getClasse() {
+        return classe;
+    }
 }

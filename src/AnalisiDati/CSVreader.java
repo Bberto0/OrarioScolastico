@@ -38,6 +38,7 @@ public class CSVreader {
 
             ElencoOrari e = new ElencoOrari(d);
             e.stampaGriglie();
+            e.rilevaSovrapposizioni();
 
         } catch(IOException e) {
 

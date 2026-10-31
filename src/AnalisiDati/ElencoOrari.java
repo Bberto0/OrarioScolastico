@@ -1,6 +1,7 @@
 package AnalisiDati;
 import ClassiScuola.*;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 
 public class ElencoOrari {
@@ -44,17 +45,25 @@ public class ElencoOrari {
     }
     public void generaOrario(){
         for (Classe c: lezioniPerClasse.keySet()){
+
             ArrayList<Lezioni> lezioni = lezioniPerClasse.get(c);
+
+            Collections.shuffle(lezioni);
+
             Lezioni[][] griglia=new Lezioni[5][6];
             int numLezione=0;
+
             for (int g=0;g<5;g++){
                 for (int h=0;h<6;h++){
+
                     if(numLezione<lezioni.size()){
+
                         Lezioni lezioneSelezionata=lezioni.get(numLezione); // itero su tutte le lezioni, selezionandole una ad una
                         lezioneSelezionata.setGiorno(trovaGiorno(g)); // imposto un giorno
                         lezioneSelezionata.setFasciaOraria(trovaFasciaOraria(h)); // imposto una fascia oraria
                         griglia[g][h]=lezioneSelezionata; // inserisco la lezione nella griglia
                         numLezione++;
+
                     } else {
                         griglia[g][h]=null;
                     }
@@ -64,7 +73,7 @@ public class ElencoOrari {
             griglieOrario.put(c, griglia); // inserisco la griglia e la classe nell'HashMap comprensivo di tutto
         }
     }
-    private String trovaGiorno(int i){
+    private String trovaGiorno(int i) {
         switch (i){
             case 0: return "Lunedì";
             case 1: return "Martedì";
@@ -112,5 +121,59 @@ public class ElencoOrari {
             }
             System.out.println("----------------------------------------------------------------------------------\n");
         }
+    }
+    public void rilevaSovrapposizioni() {
+        System.out.println("\n=== CONTROLLO SOVRAPPOSIZIONI DOCENTI ===");
+        boolean conflittoTrovato = false;
+
+        // Mappa temporanea per tracciare dove si trova ciascun docente: Chiave = "Giorno - FasciaOraria", Valore = Lezione
+        // Oppure confrontiamo direttamente tutte le griglie tra loro.
+
+        // Approccio diretto: raccogliamo tutte le lezioni posizionate in tutte le griglie
+        // e controlliamo se lo stesso docente compare nello stesso giorno e ora in classi differenti.
+
+        java.util.Map<String, Lezioni> occupazioniDocenti = new java.util.HashMap<>();
+
+        for (Classe c : griglieOrario.keySet()) {
+            Lezioni[][] griglia = griglieOrario.get(c);
+
+            for (int g = 0; g < 5; g++) {
+                for (int h = 0; h < 6; h++) {
+                    Lezioni lezione = griglia[g][h];
+
+                    if (lezione != null && lezione.getDocente() != null) {
+                        String giorno = trovaGiorno(g);
+                        String fascia = trovaFasciaOraria(h);
+                        String docenteNome = lezione.getDocente().getNome();
+
+                        // Creiamo una chiave univoca per il "momento" nel tempo
+                        String chiaveTempoDocente = docenteNome + "_" + giorno + "_" + fascia;
+
+                        if (occupazioniDocenti.containsKey(chiaveTempoDocente)) {
+                            // CONFLITTO TROVATO!
+                            Lezioni lezionePrecedente = occupazioniDocenti.get(chiaveTempoDocente);
+
+                            System.out.println("⚠️ CONFLITTO: Il docente **" + docenteNome +
+                                    "** è assegnato contemporaneamente in due classi!");
+                            System.out.println("   - Giorno/Ora: " + giorno + " (" + fascia + ")");
+                            System.out.println("   - Classe 1: " + lezionePrecedente.getClasse().getAnno() +
+                                    lezionePrecedente.getClasse().getSezione() + " " + lezionePrecedente.getClasse().getCorso() +
+                                    " (" + lezionePrecedente.getMateria() + ")");
+                            System.out.println("   - Classe 2: " + c.getAnno() + c.getSezione() + " " + c.getCorso() +
+                                    " (" + lezione.getMateria() + ")\n");
+
+                            conflittoTrovato = true;
+                        } else {
+                            occupazioniDocenti.put(chiaveTempoDocente, lezione);
+                        }
+                    }
+                }
+            }
+        }
+
+        if (!conflittoTrovato) {
+            System.out.println("Nessuna sovrapposizione rilevata! Tutti i docenti sono liberi al momento giusto.");
+        }
+        System.out.println("==========================================\n");
     }
 }

@@ -22,7 +22,6 @@ public class Docente {
 
         if(!materie.contains(m))
             materie.add(m);
-
     }
 
     public int calcolaOreServizio() {
