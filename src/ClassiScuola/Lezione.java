@@ -1,6 +1,6 @@
 package ClassiScuola;
 
-public class Lezioni {
+public class Lezione {
 
     private Docente docente;
     private Classe classe;
@@ -8,11 +8,13 @@ public class Lezioni {
     private String giorno;
     private String fasciaOraria;
 
-    public Lezioni(Docente docente, Classe classe, Materia materia){
+    public Lezione(Docente docente, Classe classe, Materia materia) {
         this.docente = docente;
         this.classe = classe;
         this.materia = materia;
     }
+
+    // -- SETTER --
 
     public void setGiorno(String giorno){
         this.giorno = giorno;
@@ -22,15 +24,11 @@ public class Lezioni {
         this.fasciaOraria = fasciaOraria;
     }
 
-    public Materia getMateria(){
-        return materia;
-    }
+    // -- GETTER --
 
-    public Docente getDocente() {
-        return docente;
-    }
+    public Materia getMateria(){ return materia; }
 
-    public Classe getClasse() {
-        return classe;
-    }
+    public Docente getDocente() { return docente; }
+
+    public Classe getClasse() { return classe; }
 }

@@ -1,20 +1,25 @@
 package AnalisiDati;
 import ClassiScuola.*;
+
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 
 public class ElencoOrari {
 
     private final Dati d;
-    private HashMap <Classe, ArrayList<Lezioni>> lezioniPerClasse = new HashMap<>();
-    private HashMap <Classe, Lezioni[][]> griglieOrario = new HashMap<>();
+    private final HashMap<Classe, ArrayList<Lezione>> lezioniPerClasse = new HashMap<>();
+    private final ArrayList<Lezione> lezioni = new ArrayList<>();
+    private final HashMap <Classe, Lezione[][]> griglieOrario = new HashMap<>();
+
+    // per controllare la disponibilita'
+    private final HashMap<Classe, boolean[][]> occupazioneClassi = new HashMap<>();
+    private final HashMap<Docente, boolean[][]> occupazioneDocenti = new HashMap<>();
 
     public ElencoOrari(Dati d) {
 
         this.d = d;
         istanziaLezioni();
-        generaOrario();
+        generaOrario(0);
     }
 
     public void istanziaLezioni() {
@@ -28,51 +33,101 @@ public class ElencoOrari {
             // per ogni classe che ha la suddetta materia
             for(Classe c : m.getMappaClassiDocenti().keySet()) {
 
+                Docente d = m.getDocente(c);
+
+                griglieOrario.putIfAbsent(c, new Lezione[5][6]);
+                occupazioneDocenti.putIfAbsent(d, new boolean[5][6]);
+                occupazioneClassi.putIfAbsent(c, new boolean[5][6]);
+
                 // per ogni ora della classe
                 for(int j = 0; j < m.getOre(); j++) {
 
                     // istanzio un oggetto lezioni
-                    Lezioni l = new Lezioni(m.getDocente(c), c, m);
+                    Lezione l = new Lezione(d, c, m);
 
                     // controllo: se la classe non è già dell'HashMap, la inserisco
                     lezioniPerClasse.putIfAbsent(c, new ArrayList<>());
 
                     // inserisco la lezione dell' ArrayList della classe
                     lezioniPerClasse.get(c).add(l);
+
+                    lezioni.add(l);
                 }
             }
         }
     }
-    public void generaOrario(){
-        for (Classe c: lezioniPerClasse.keySet()){
 
-            ArrayList<Lezioni> lezioni = lezioniPerClasse.get(c);
+    // il metodo ritorna vero se è riuscito a posizionare tutte le lezioni
+    public boolean generaOrario(int indiceLezione) {
 
-            Collections.shuffle(lezioni);
+        // caso base: tutte le lezioni sono posizionate
+        if(indiceLezione == lezioni.size())
+            return true;
 
-            Lezioni[][] griglia=new Lezioni[5][6];
-            int numLezione=0;
+        Lezione l = lezioni.get(indiceLezione);
+        Classe c = l.getClasse();
+        Docente d = l.getDocente();
 
-            for (int g=0;g<5;g++){
-                for (int h=0;h<6;h++){
+        for(int g = 0; g < 5; g++) {
 
-                    if(numLezione<lezioni.size()){
+            for(int h = 0; h < 6; h++) {
 
-                        Lezioni lezioneSelezionata=lezioni.get(numLezione); // itero su tutte le lezioni, selezionandole una ad una
-                        lezioneSelezionata.setGiorno(trovaGiorno(g)); // imposto un giorno
-                        lezioneSelezionata.setFasciaOraria(trovaFasciaOraria(h)); // imposto una fascia oraria
-                        griglia[g][h]=lezioneSelezionata; // inserisco la lezione nella griglia
-                        numLezione++;
+                if(isDisponibile(c, d, g, h)) {
 
-                    } else {
-                        griglia[g][h]=null;
-                    }
+                    assegnaLezione(l, g, h);
 
+                    if(generaOrario(indiceLezione + 1))
+                        return true; // tutte le lezioni sono state assegnate
+
+                    // se l'assegnazione ha portato ad un vicolo cieco torno indietro (BACKTRACKING)
+                    rimuoviLezione(l, g, h);
                 }
             }
-            griglieOrario.put(c, griglia); // inserisco la griglia e la classe nell'HashMap comprensivo di tutto
         }
+
+        // torno ancora piu' indietro se nessuna delle opzioni ha portato ad una soluzione con la lezione corrente
+        return false;
     }
+
+    public boolean isDisponibile(Classe classe, Docente docente, int giorno, int ora) {
+
+        if(occupazioneClassi.get(classe)[giorno][ora])
+            return false;
+
+        return !occupazioneDocenti.get(docente)[giorno][ora];
+    }
+
+    public void assegnaLezione(Lezione lezione, int giorno, int ora) {
+
+        Classe c = lezione.getClasse();
+        Docente d = lezione.getDocente();
+
+        // imposto giorno e ora della lezione
+        lezione.setGiorno(trovaGiorno(giorno));
+        lezione.setFasciaOraria(trovaFasciaOraria(ora));
+
+        // aggiungo la lezione alla griglia orario della classe
+        griglieOrario.get(c)[giorno][ora] = lezione;
+
+        // gestisco la disponibilita'
+        occupazioneClassi.get(c)[giorno][ora] = true;
+        occupazioneDocenti.get(d)[giorno][ora] = true;
+    }
+
+    public void rimuoviLezione(Lezione lezione, int giorno, int ora) {
+
+        Classe c = lezione.getClasse();
+        Docente d = lezione.getDocente();
+
+        lezione.setGiorno(null);
+        lezione.setFasciaOraria(null);
+
+        griglieOrario.get(c)[giorno][ora] = null;
+
+        occupazioneClassi.get(c)[giorno][ora] = false;
+        occupazioneDocenti.get(d)[giorno][ora] = false;
+    }
+
     private String trovaGiorno(int i) {
         switch (i){
             case 0: return "Lunedì";
@@ -95,14 +150,14 @@ public class ElencoOrari {
         }
     }
 
-    public HashMap<Classe, Lezioni[][]> getGriglieOrario() {
+    public HashMap<Classe, Lezione[][]> getGriglieOrario() {
         return griglieOrario;
     }
 
     public void stampaGriglie(){
         for (Classe c : griglieOrario.keySet()){
-            System.out.println("ORARIO CLASSE: " + c.getAnno() + c.getSezione() + " " + c.getCorso() + "\n");
-            Lezioni[][] l = griglieOrario.get(c);
+            System.out.println("ORARIO CLASSE: " + c.getAnno() + c.getSezione() + " " + c.getCorso() + "\n"); // sostituire c.get... con toString() di classe
+            Lezione[][] l = griglieOrario.get(c);
 
             // Intestazione con i giorni della settimana
             System.out.printf("%-10s | %-15s | %-15s | %-15s | %-15s | %-15s%n", "Ora", "Lunedì", "Martedì", "Mercoledì", "Giovedì", "Venerdì");
@@ -122,6 +177,7 @@ public class ElencoOrari {
             System.out.println("----------------------------------------------------------------------------------\n");
         }
     }
+
     public void rilevaSovrapposizioni() {
         System.out.println("\n=== CONTROLLO SOVRAPPOSIZIONI DOCENTI ===");
         boolean conflittoTrovato = false;
@@ -132,14 +188,14 @@ public class ElencoOrari {
         // Approccio diretto: raccogliamo tutte le lezioni posizionate in tutte le griglie
         // e controlliamo se lo stesso docente compare nello stesso giorno e ora in classi differenti.
 
-        java.util.Map<String, Lezioni> occupazioniDocenti = new java.util.HashMap<>();
+        java.util.Map<String, Lezione> occupazioniDocenti = new java.util.HashMap<>();
 
         for (Classe c : griglieOrario.keySet()) {
-            Lezioni[][] griglia = griglieOrario.get(c);
+            Lezione[][] griglia = griglieOrario.get(c);
 
             for (int g = 0; g < 5; g++) {
                 for (int h = 0; h < 6; h++) {
-                    Lezioni lezione = griglia[g][h];
+                    Lezione lezione = griglia[g][h];
 
                     if (lezione != null && lezione.getDocente() != null) {
                         String giorno = trovaGiorno(g);
@@ -151,7 +207,7 @@ public class ElencoOrari {
 
                         if (occupazioniDocenti.containsKey(chiaveTempoDocente)) {
                             // CONFLITTO TROVATO!
-                            Lezioni lezionePrecedente = occupazioniDocenti.get(chiaveTempoDocente);
+                            Lezione lezionePrecedente = occupazioniDocenti.get(chiaveTempoDocente);
 
                             System.out.println("⚠️ CONFLITTO: Il docente **" + docenteNome +
                                     "** è assegnato contemporaneamente in due classi!");
