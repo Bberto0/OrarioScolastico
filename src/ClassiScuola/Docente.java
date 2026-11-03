@@ -24,12 +24,12 @@ public class Docente {
             materie.add(m);
     }
 
-    public int calcolaOreServizio() {
+    public int calcolaOre() {
 
         int oreTotali = 0;
 
         for(Materia c : materie)
-            oreTotali+=c.getOre();
+            oreTotali += c.getOre();
 
         return oreTotali;
     }

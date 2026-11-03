@@ -19,6 +19,13 @@ public class ElencoOrari {
 
         this.d = d;
         istanziaLezioni();
+
+        // ordina le lezioni in base al numero di ore del docente
+        lezioni.sort((l1, l2) -> Integer.compare(
+                l2.getDocente().calcolaOre(),
+                l1.getDocente().calcolaOre()
+        ));
+
         generaOrario(0);
     }
 
