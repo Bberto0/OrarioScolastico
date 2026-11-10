@@ -9,10 +9,11 @@ public class Docente {
 
     private final ArrayList<Classe> classi = new ArrayList<>();
     private final ArrayList<Materia> materie = new ArrayList<>();
+    private boolean[][] disponibilita= new boolean[5][6];
 
     public Docente(String nome) {
-
         this.nome = nome;
+        inizializzaDisponibilita();
     }
 
     public void aggiungiInformazioni(Classe c, Materia m) {
@@ -55,4 +56,37 @@ public class Docente {
     public String getNome(){
         return nome;
     }
+
+    private void inizializzaDisponibilita(){
+        for(int i=0;i<5;i++){
+            for(int j=0;j<6;j++){
+                disponibilita[i][j] = true;
+            }
+        }
+    }
+    public void aggiungiGiornoLibero(int giornoLibero){
+        for(int i=0;i<5;i++){
+            disponibilita[i][giornoLibero] = false;
+        }
+    }
+    public void vincoloPrimaOra(){
+        for(int i=0; i<5; i++){
+            disponibilita[i][0] = false;
+        }
+    }
+
+    public void vincoloUltimaOra(){
+        for(int i=0; i<5; i++){
+            disponibilita[i][5] = false;
+        }
+    }
+
+    public boolean isDisponibile(int i, int j){
+        if(disponibilita[i][j]){
+            return true;
+        } else {
+            return false;
+        }
+    }
+
 }

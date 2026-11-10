@@ -4,6 +4,10 @@ import ClassiScuola.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+// TO-DO:
+// modificare il vincolo docente inserendo un arrayList di lezioni non istanziate e un ciclo che non termina
+// fino a quando non rimane nessuna lezione
+
 public class ElencoOrari {
 
     private final Dati d;

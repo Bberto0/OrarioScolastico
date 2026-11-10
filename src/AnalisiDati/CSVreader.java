@@ -10,7 +10,7 @@ public class CSVreader {
     public final static String COMMA_DELIMITER = ";";
 
     // modificare il percorso se il file non si trova nella stessa cartella del progetto
-    public final static Path path = Paths.get("ore_docente_classe.csv");
+    public final static Path path = Paths.get("ore_docente_classe (1).csv");
 
     public static void main(String[] args) {
         String line;
