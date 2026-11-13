@@ -23,7 +23,7 @@ public class Dati {
             String corso = campi[3];
 
             String materia = campi[4];
-            int ore=Integer.parseInt(campi[5]);
+            int ore = Integer.parseInt(campi[5]);
 
             // -- gestione Classe --
             Classe c = new Classe(anno, sezione, corso);

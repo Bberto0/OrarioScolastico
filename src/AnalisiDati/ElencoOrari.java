@@ -4,18 +4,14 @@ import ClassiScuola.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-// TO-DO:
-// modificare il vincolo docente inserendo un arrayList di lezioni non istanziate e un ciclo che non termina
-// fino a quando non rimane nessuna lezione
-
 public class ElencoOrari {
 
     private final Dati d;
     private final HashMap<Classe, ArrayList<Lezione>> lezioniPerClasse = new HashMap<>();
-    private final ArrayList<Lezione> lezioni = new ArrayList<>();
+    private final ArrayList<Lezione> lezioni = new ArrayList<>(); // implementare controllo lezioni non assegnate e avviso in interfaccia grafica
     private final HashMap <Classe, Lezione[][]> griglieOrario = new HashMap<>();
 
-    // per controllare la disponibilita'
+    // controllo disponibilita'
     private final HashMap<Classe, boolean[][]> occupazioneClassi = new HashMap<>();
     private final HashMap<Docente, boolean[][]> occupazioneDocenti = new HashMap<>();
 

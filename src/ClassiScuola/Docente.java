@@ -4,12 +4,13 @@ import java.util.ArrayList;
 
 public class Docente {
 
+    // implementare isLaboratorio (controllo con numOre e stessa lezione)
     private final String nome;
     private int oreServizio = 0;
 
     private final ArrayList<Classe> classi = new ArrayList<>();
     private final ArrayList<Materia> materie = new ArrayList<>();
-    private boolean[][] disponibilita= new boolean[5][6];
+    private boolean[][] disponibilita = new boolean[5][6];
 
     public Docente(String nome) {
         this.nome = nome;
