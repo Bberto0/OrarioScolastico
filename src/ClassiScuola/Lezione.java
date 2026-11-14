@@ -3,6 +3,7 @@ package ClassiScuola;
 public class Lezione {
 
     private Docente docente;
+    private Docente profLaboratorio;
     private Classe classe;
     private Materia materia;
     private String giorno;
@@ -10,6 +11,15 @@ public class Lezione {
 
     public Lezione(Docente docente, Classe classe, Materia materia) {
         this.docente = docente;
+        this.classe = classe;
+        this.materia = materia;
+    }
+
+    // overload del costruttore con aggiunta del docente di laboratorio
+    public Lezione(Docente docente, Docente lab, Classe classe, Materia materia) {
+
+        this.docente = docente;
+        this.profLaboratorio = lab;
         this.classe = classe;
         this.materia = materia;
     }

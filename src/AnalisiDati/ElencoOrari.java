@@ -20,7 +20,7 @@ public class ElencoOrari {
         this.d = d;
         istanziaLezioni();
 
-        // ordina le lezioni in base al numero di ore del docente
+        // OTTIMIZZAZIONE: ordina le lezioni in base al numero di ore del docente
         lezioni.sort((l1, l2) -> Integer.compare(
                 l2.getDocente().calcolaOre(),
                 l1.getDocente().calcolaOre()
@@ -238,5 +238,19 @@ public class ElencoOrari {
             System.out.println("Nessuna sovrapposizione rilevata! Tutti i docenti sono liberi al momento giusto.");
         }
         System.out.println("==========================================\n");
+    }
+
+    public ArrayList<Docente> rilevaProfDiLaboratorio() {
+
+       for(Classe c : griglieOrario.keySet()) {
+
+           for(int i = 0; i < griglieOrario.size(); i++) {
+
+               for(int j = 0; j < griglieOrario.size(); j++) {
+
+
+               }
+           }
+       }
     }
 }

@@ -31,6 +31,8 @@ public class Classe {
         return materie;
     }
 
+    public ArrayList<Docente> getDocenti() { return docenti; }
+
     public int getAnno() {
         return anno;
     }
