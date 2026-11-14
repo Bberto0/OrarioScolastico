@@ -6,10 +6,11 @@ public class Docente {
 
     // implementare isLaboratorio (controllo con numOre e stessa lezione)
     private final String nome;
-    private int oreServizio = 0;
 
     private final ArrayList<Classe> classi = new ArrayList<>();
     private final ArrayList<Materia> materie = new ArrayList<>();
+    private final ArrayList<Lezione> lezioni = new ArrayList<>();
+
     private boolean[][] disponibilita = new boolean[5][6];
     private final boolean laboratorio = false;
 
@@ -18,7 +19,7 @@ public class Docente {
         this.nome = nome;
 
         inizializzaDisponibilita();
-        isDiLaboratorio();
+
     }
 
     public void aggiungiInformazioni(Classe c, Materia m) {
@@ -71,6 +72,8 @@ public class Docente {
     public ArrayList<Materia> getCorsi() { return materie; }
 
     public ArrayList<Classe> getClassi() { return classi; }
+
+    public ArrayList<Lezione> getLezioni() { return lezioni; }
 
     public String getNome(){ return nome; }
 

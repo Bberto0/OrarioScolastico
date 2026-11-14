@@ -11,6 +11,8 @@ public class ElencoOrari {
     private final ArrayList<Lezione> lezioni = new ArrayList<>(); // implementare controllo lezioni non assegnate e avviso in interfaccia grafica
     private final HashMap <Classe, Lezione[][]> griglieOrario = new HashMap<>();
 
+    private final ArrayList<Docente> profDiLaboratorio = new ArrayList<>();
+
     // controllo disponibilita'
     private final HashMap<Classe, boolean[][]> occupazioneClassi = new HashMap<>();
     private final HashMap<Docente, boolean[][]> occupazioneDocenti = new HashMap<>();
@@ -58,6 +60,7 @@ public class ElencoOrari {
                     // inserisco la lezione dell' ArrayList della classe
                     lezioniPerClasse.get(c).add(l);
 
+                    d.getLezioni().add(l);
                     lezioni.add(l);
                 }
             }
@@ -240,17 +243,39 @@ public class ElencoOrari {
         System.out.println("==========================================\n");
     }
 
-    public ArrayList<Docente> rilevaProfDiLaboratorio() {
+    public void rilevaProfDiLaboratorio() {
 
        for(Classe c : griglieOrario.keySet()) {
+           ArrayList<Docente> docentiClasse = c.getDocenti();
 
-           for(int i = 0; i < griglieOrario.size(); i++) {
+           for(int i = 0; i < docentiClasse.size(); i++) {
+               for(int j = 0; j < docentiClasse.size(); j++) {
 
-               for(int j = 0; j < griglieOrario.size(); j++) {
+                   Docente d1 = docentiClasse.get(i);
+                   Docente d2 = docentiClasse.get(j);
 
+                   if(isStessaLezione(d1, d2, c)) {
+                        Docente profLab = (d1.calcolaOre() > d2.calcolaOre()) ? d2 : d1;
 
+                        // aggiunta del professore alla lista dei prof di laboratorio
+                        if(!profDiLaboratorio.contains(profLab))
+                            profDiLaboratorio.add(profLab);
+                   }
                }
            }
        }
+    }
+
+    public boolean isStessaLezione(Docente d1, Docente d2, Classe c) {
+
+        for(Lezione l1 : d1.getLezioni()) {
+            if(l1.getClasse().equals(c)) {
+                for(Lezione l2: d2.getLezioni()) {
+
+                    return l2.getClasse().equals(c) && l1.getMateria().equals(l2.getMateria());
+                }
+            }
+        }
+        return false;
     }
 }
